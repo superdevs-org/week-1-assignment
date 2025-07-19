@@ -5,6 +5,8 @@ use actix_web::{HttpResponse, Responder, get, post};
 use serde::{Serialize, Deserialize};
 use crate::middleware::UserId;
 use crate::db::Db;
+use todo_macros::todo_app;
+use serde_json::{Map, Value};
 
 #[derive(Serialize, Deserialize)]
 struct CreateTodoResponse {
@@ -13,12 +15,12 @@ struct CreateTodoResponse {
 
 #[derive(Serialize, Deserialize)]
 struct CreateTodoRequest {
-    pub text: String
+    pub text: Value
 }
 
-#[derive(Serialize, Deserialize)]
+#[todo_app]
 struct GetTodosResponse {
-    todos: Vec<String>
+    todos: Vec<Value>
 }
 
 #[post("/todo")]
