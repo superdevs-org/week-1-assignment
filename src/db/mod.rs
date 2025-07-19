@@ -1,12 +1,12 @@
 use serde::{Serialize, Deserialize};
-
+use serde_json::Value;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct User {
     pub id: String,
     pub role: UserRole,
     pub username: String,
     pub password: String,
-    pub todos: Vec<String>
+    pub todos: Vec<Value>
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -37,7 +37,7 @@ impl Db {
             username,
             password,
             todos: vec![],
-            role: UserRole::User,
+            role,
         });
         self.index = self.index + 1;
         (self.index - 1).to_string()
@@ -51,7 +51,7 @@ impl Db {
         })
     }
 
-    pub fn create_todo(&mut self, user_id: String, text: String)  {
+    pub fn create_todo(&mut self, user_id: String, text: Value)  {
         println!("users: {:?}", self.users);
         let user = self.users.iter_mut().find(|u| {
             u.id == user_id
@@ -71,7 +71,7 @@ impl Db {
         };
     }
 
-    pub fn get_todos(&self, user_id: String) -> Vec<String> {
+    pub fn get_todos(&self, user_id: String) -> Vec<Value> {
         let user = self.users.iter().find(|u| {
             u.id == user_id
         });
